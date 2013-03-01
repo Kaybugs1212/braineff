@@ -1,21 +1,14 @@
 package com.rosch.braineff;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.rosch.braineff.EditorFragment.EditorFragmentHandler;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.media.MediaScannerConnection;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements EditorFragmentHandler, EmulatorFragment.ProgramContentsProvider
+public class MainActivity extends Activity implements EditorFragmentHandler, InterpreterFragment.ProgramContentsProvider
 {
 	private String programContents;
 	
@@ -60,16 +53,23 @@ public class MainActivity extends Activity implements EditorFragmentHandler, Emu
 
 	@Override
 	public boolean onCompileProgram(Bundle arguments)
-	{
-		programContents = arguments.getString("program_source");
+	{	
+		InterpreterFragment fragment = (InterpreterFragment) getFragmentManager().findFragmentByTag("interpreter_fragment");
 		
-		if (getFragmentManager().findFragmentByTag("emulator_fragment") == null)
+		if (fragment == null)
 		{
+			fragment = new InterpreterFragment();
+			fragment.setArguments(arguments);
+			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 	
 			transaction.addToBackStack(null);
-			transaction.replace(R.id.fragment_container, new EmulatorFragment(), "emulator_fragment");
+			transaction.replace(R.id.fragment_container, fragment, "interpreter_fragment");			
 			transaction.commit();
+		}
+		else
+		{
+			fragment.getArguments().putAll(arguments);
 		}
 		
 		return false;
@@ -77,30 +77,13 @@ public class MainActivity extends Activity implements EditorFragmentHandler, Emu
 
 	@Override
 	public boolean onSaveProgram(Bundle arguments)
-	{
-		File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Braineff/blah.txt");
-			
-		FileWriter writer;
-		try {
-			file.createNewFile();
-			writer = new FileWriter(file);
-			writer.write(arguments.getString("program_source"));
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		
-		MediaScannerConnection.scanFile(this, new String[] { file.getAbsolutePath() }, null, null);
-		
-		Toast.makeText(this, file.getPath(), Toast.LENGTH_SHORT).show();
-		
+	{		
 		return false;
 	}
 
 	@Override
-	public boolean onLoadProgram(Bundle arguments) {
-		// TODO Auto-generated method stub
+	public boolean onLoadProgram(Bundle arguments)
+	{
 		return false;
 	}
 }

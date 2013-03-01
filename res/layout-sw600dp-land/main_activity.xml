@@ -15,11 +15,11 @@
         android:tag="editor_fragment"/>
 
     <fragment
-        android:id="@+id/emulator_fragment"
-        android:name="com.rosch.braineff.EmulatorFragment"
+        android:id="@+id/interpreter_fragment"
+        android:name="com.rosch.braineff.InterpreterFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        android:tag="emulator_fragment"/>
+        android:tag="interpreter_fragment"/>
 
 </LinearLayout>

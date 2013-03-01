@@ -4,10 +4,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class EmulatorFragment extends Fragment
+public class InterpreterFragment extends Fragment
 {
 	public interface ProgramContentsProvider
 	{
@@ -17,18 +18,18 @@ public class EmulatorFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.emulator_fragment, container, false);
-	}
-	
-	@Override
-	public void onStart()
-	{
-		super.onStart();
+		View view = inflater.inflate(R.layout.interpreter_fragment, container, false);
 		
-		ProgramContentsProvider provider = (ProgramContentsProvider) getActivity();
+		view.findViewById(R.id.interpreter_btn_run).setOnClickListener(new OnClickListener()
+		{			
+			@Override
+			public void onClick(View view)
+			{
+				runProgram(getArguments().getString("program_source"));
+			}
+		});
 		
-		if (provider != null)
-			runProgram(provider.getProgramContents());
+		return view;
 	}
 	
 	public void runProgram(String programContents)
