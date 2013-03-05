@@ -22,5 +22,7 @@
     <string name="menu_editor_load_condensed">Load</string>
     <string name="interpreter_btn_run">Run</string>
     <string name="console_output_title">Console Output</string>
+    <string name="save_file_fragment_title">Save file as&#8230;</string>
+    <string name="save_file_filename_hint">untitled.bf</string>
 
 </resources>

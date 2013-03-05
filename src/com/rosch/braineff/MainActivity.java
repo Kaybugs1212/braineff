@@ -77,7 +77,10 @@ public class MainActivity extends Activity implements EditorFragmentHandler, Int
 
 	@Override
 	public boolean onSaveProgram(Bundle arguments)
-	{		
+	{
+		SaveFileFragment fragment = new SaveFileFragment();
+		fragment.show(getFragmentManager(), "save_file_fragment");
+		
 		return false;
 	}
 
