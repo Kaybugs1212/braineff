@@ -25,7 +25,7 @@ public class InterpreterFragment extends Fragment
 			@Override
 			public void onClick(View view)
 			{
-				runProgram(getArguments().getString("program_source"));
+				runProgram(getArguments().getString("file_contents"));
 			}
 		});
 		

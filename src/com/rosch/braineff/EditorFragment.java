@@ -37,8 +37,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 		String programFilename = "untitled.bf";
 		String programSource = "";		
 		
-		((TextView) view.findViewById(R.id.program_filename)).setText(programFilename);
-		((EditText) view.findViewById(R.id.program_source)).setText(programSource);
+		((TextView) view.findViewById(R.id.file_filename)).setText(programFilename);
+		((EditText) view.findViewById(R.id.file_contents)).setText(programSource);
 		
 		// Easier to set each Buttons' listener than to setup a recursive loop.
 		view.findViewById(R.id.kb_inc_ptr).setOnClickListener(this);
@@ -96,10 +96,10 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 		if (handler == null)
 			return false;
 		
-		EditText sourceView = (EditText) getView().findViewById(R.id.program_source);
+		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
 		
 		Bundle arguments = new Bundle();		
-		arguments.putString("program_source", sourceView.getText().toString());
+		arguments.putString("file_contents", sourceView.getText().toString());
 		
 		return handler.onCompileProgram(arguments);
 		
@@ -112,17 +112,17 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 		if (handler == null)
 			return false;
 		
-		TextView filenameView = (TextView) getView().findViewById(R.id.program_filename);
-		EditText sourceView = (EditText) getView().findViewById(R.id.program_source);
+		TextView filenameView = (TextView) getView().findViewById(R.id.file_filename);
+		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
 		
-		Bundle arguments = new Bundle();		
-		arguments.putString("program_filename", filenameView.getText().toString());
-		arguments.putString("program_source", sourceView.getText().toString());
+		Bundle arguments = new Bundle();
+		arguments.putString("file_filename", filenameView.getText().toString());
+		arguments.putString("file_contents", sourceView.getText().toString());
 		
 		if (handler.onSaveProgram(arguments) == false)
 			return false;
 		
-		filenameView.setText(arguments.getString("program_filename"));
+		filenameView.setText(arguments.getString("file_filename"));
 		
 		return true;
 	}
@@ -139,19 +139,25 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 		if (handler.onLoadProgram(arguments) == false)
 			return false;
 		
-		TextView filenameView = (TextView) getView().findViewById(R.id.program_filename);
-		EditText sourceView = (EditText) getView().findViewById(R.id.program_source);
+		TextView filenameView = (TextView) getView().findViewById(R.id.file_filename);
+		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
 		
 		filenameView.setText(arguments.getString("program_filename"));
 		sourceView.setText(arguments.getString("program_source"));
 		
 		return true;
 	}
+	
+	public void setFilenameText(String text)
+	{
+		TextView filenameTextView = (TextView) getView().findViewById(R.id.file_filename);
+		filenameTextView.setText(text);
+	}
 
 	@Override
 	public void onClick(View view)
 	{		
-		EditText editorContents = (EditText) getView().findViewById(R.id.program_source);
+		EditText editorContents = (EditText) getView().findViewById(R.id.file_contents);
 		String text = "";
 		
 		switch (view.getId())
