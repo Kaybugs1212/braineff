@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditorFragment extends Fragment implements View.OnClickListener, SaveFileFragment.OnSaveFileSuccessListener
+public class EditorFragment extends Fragment implements View.OnClickListener,
+	SaveFileFragment.OnSaveFileSuccessListener, LoadFileFragment.OnLoadFileSuccessListener
 {
 	public interface EditorFragmentHandler
 	{
 		public boolean onCompileProgram(Bundle arguments);
-		public boolean onLoadProgram(Bundle arguments);
 	}
 	
 	@Override
@@ -117,8 +117,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Sa
 		SaveFileFragment fragment = new SaveFileFragment();
 		
 		fragment.setArguments(arguments);
-		fragment.setTargetFragment(this, 0);
-		
+		fragment.setTargetFragment(this, 0);		
 		fragment.show(getFragmentManager(), "save_file_fragment");
 		
 		return true;
@@ -126,21 +125,10 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Sa
 	
 	private boolean onEditorLoad()
 	{
-		EditorFragmentHandler handler = (EditorFragmentHandler) getActivity();
+		LoadFileFragment fragment = new LoadFileFragment();
 		
-		if (handler == null)
-			return false;
-		
-		Bundle arguments = new Bundle();
-		
-		if (handler.onLoadProgram(arguments) == false)
-			return false;
-		
-		TextView filenameView = (TextView) getView().findViewById(R.id.file_filename);
-		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
-		
-		filenameView.setText(arguments.getString("program_filename"));
-		sourceView.setText(arguments.getString("program_source"));
+		fragment.setTargetFragment(this,  0);
+		fragment.show(getFragmentManager(), "load_file_fragment");
 		
 		return true;
 	}
@@ -192,5 +180,15 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Sa
 	{	
 		TextView filenameTextView = (TextView) getView().findViewById(R.id.file_filename);
 		filenameTextView.setText(arguments.getString("file_filename"));
+	}
+
+	@Override
+	public void onLoadFileSuccess(Bundle arguments)
+	{
+		TextView filenameTextView = (TextView) getView().findViewById(R.id.file_filename);
+		filenameTextView.setText(arguments.getString("file_filename"));
+		
+		EditText contentsEditText = (EditText) getView().findViewById(R.id.file_contents);
+		contentsEditText.setText(arguments.getString("file_contents"));
 	}
 }

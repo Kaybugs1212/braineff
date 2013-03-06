@@ -8,12 +8,12 @@
         android:titleCondensed="@string/menu_editor_compile_condensed"/>
     <item
         android:id="@+id/menu_editor_save"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/menu_editor_save"
         android:titleCondensed="@string/menu_editor_save_condensed"/>
     <item
         android:id="@+id/menu_editor_load"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/menu_editor_load"
         android:titleCondensed="@string/menu_editor_load_condensed"/>
 

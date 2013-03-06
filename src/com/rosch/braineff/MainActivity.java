@@ -64,10 +64,4 @@ public class MainActivity extends Activity implements EditorFragment.EditorFragm
 		
 		return false;
 	}
-	
-	@Override
-	public boolean onLoadProgram(Bundle arguments)
-	{
-		return false;
-	}
 }
