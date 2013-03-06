@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditorFragment extends Fragment implements View.OnClickListener
+public class EditorFragment extends Fragment implements View.OnClickListener, SaveFileFragment.OnSaveFileSuccessListener
 {
 	public interface EditorFragmentHandler
 	{
 		public boolean onCompileProgram(Bundle arguments);
-		public boolean onSaveProgram(Bundle arguments);
 		public boolean onLoadProgram(Bundle arguments);
 	}
 	
@@ -34,11 +33,11 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 	{
 		View view = inflater.inflate(R.layout.editor_fragment, container, false);
 		
-		String programFilename = "untitled.bf";
-		String programSource = "";		
+		String filename = "";
+		String contents = "";		
 		
-		((TextView) view.findViewById(R.id.file_filename)).setText(programFilename);
-		((EditText) view.findViewById(R.id.file_contents)).setText(programSource);
+		((TextView) view.findViewById(R.id.file_filename)).setText(filename);
+		((EditText) view.findViewById(R.id.file_contents)).setText(contents);
 		
 		// Easier to set each Buttons' listener than to setup a recursive loop.
 		view.findViewById(R.id.kb_inc_ptr).setOnClickListener(this);
@@ -106,23 +105,21 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 	}
 	
 	private boolean onEditorSave()
-	{
-		EditorFragmentHandler handler = (EditorFragmentHandler) getActivity();
-		
-		if (handler == null)
-			return false;
-		
-		TextView filenameView = (TextView) getView().findViewById(R.id.file_filename);
-		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
+	{		
+		TextView filenameTextView = (TextView) getView().findViewById(R.id.file_filename);
+		EditText contentsEditText = (EditText) getView().findViewById(R.id.file_contents);
 		
 		Bundle arguments = new Bundle();
-		arguments.putString("file_filename", filenameView.getText().toString());
-		arguments.putString("file_contents", sourceView.getText().toString());
 		
-		if (handler.onSaveProgram(arguments) == false)
-			return false;
+		arguments.putString("file_filename", filenameTextView.getText().toString());
+		arguments.putString("file_contents", contentsEditText.getText().toString());
 		
-		filenameView.setText(arguments.getString("file_filename"));
+		SaveFileFragment fragment = new SaveFileFragment();
+		
+		fragment.setArguments(arguments);
+		fragment.setTargetFragment(this, 0);
+		
+		fragment.show(getFragmentManager(), "save_file_fragment");
 		
 		return true;
 	}
@@ -188,5 +185,12 @@ public class EditorFragment extends Fragment implements View.OnClickListener
 								
 		if (text.isEmpty() == false)
 			editorContents.getText().insert(editorContents.getSelectionStart(), text);
+	}
+
+	@Override
+	public void onSaveFileSuccess(Bundle arguments)
+	{	
+		TextView filenameTextView = (TextView) getView().findViewById(R.id.file_filename);
+		filenameTextView.setText(arguments.getString("file_filename"));
 	}
 }

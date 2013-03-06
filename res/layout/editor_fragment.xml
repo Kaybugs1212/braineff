@@ -12,6 +12,7 @@
         android:padding="5dp"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
+        android:hint="@string/editor_filename_hint"
         android:textSize="20sp" />
 
     <EditText

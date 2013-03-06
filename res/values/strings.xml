@@ -20,9 +20,12 @@
     <string name="menu_editor_save_condensed">Save</string>
     <string name="menu_editor_load">Load Program</string>
     <string name="menu_editor_load_condensed">Load</string>
+    <string name="editor_filename_hint">(untitled)</string>
     <string name="interpreter_btn_run">Run</string>
     <string name="console_output_title">Console Output</string>
     <string name="save_file_fragment_title">Save file as&#8230;</string>
     <string name="save_file_filename_hint">untitled.bf</string>
+    <string name="save_file_toast_success">File successfully saved as: %s\</string>
+    <string name="save_file_toast_failure">An error occurred while saving the file: %s\</string>
 
 </resources>
