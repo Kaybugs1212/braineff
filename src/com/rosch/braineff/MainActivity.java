@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements EditorFragment.EditorFragm
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
 			transaction.replace(R.id.fragment_container, new EditorFragment(), "editor_fragment");
+			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.commit();
 		}
 	}
@@ -51,17 +52,18 @@ public class MainActivity extends Activity implements EditorFragment.EditorFragm
 	@Override
 	public boolean onCompileProgram(Bundle arguments)
 	{	
-		InterpreterFragment fragment = (InterpreterFragment) getFragmentManager().findFragmentByTag("interpreter_fragment");
+		ConsoleFragment fragment = (ConsoleFragment) getFragmentManager().findFragmentByTag("console_fragment");
 		
 		if (fragment == null)
 		{
-			fragment = new InterpreterFragment();
+			fragment = new ConsoleFragment();
 			fragment.setArguments(arguments);
 			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 	
 			transaction.addToBackStack(null);
-			transaction.replace(R.id.fragment_container, fragment, "interpreter_fragment");			
+			transaction.replace(R.id.fragment_container, fragment, "console_fragment");
+			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.commit();
 		}
 		else

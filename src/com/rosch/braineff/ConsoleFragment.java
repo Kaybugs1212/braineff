@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class InterpreterFragment extends Fragment
+public class ConsoleFragment extends Fragment
 {
 	public interface ProgramContentsProvider
 	{
@@ -18,9 +18,9 @@ public class InterpreterFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.interpreter_fragment, container, false);
+		View view = inflater.inflate(R.layout.console_fragment, container, false);
 		
-		view.findViewById(R.id.interpreter_btn_run).setOnClickListener(new OnClickListener()
+		view.findViewById(R.id.console_btn_run).setOnClickListener(new OnClickListener()
 		{			
 			@Override
 			public void onClick(View view)

@@ -30,11 +30,11 @@
         android:orientation="horizontal">
         
         <Button
-            android:id="@+id/interpreter_btn_run"
+            android:id="@+id/console_btn_run"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="@string/interpreter_btn_run" />
+            android:text="@string/console_btn_run" />
         
     </LinearLayout>
 

@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/interpreter_fragment"
-        android:name="com.rosch.braineff.InterpreterFragment"
+        android:name="com.rosch.braineff.ConsoleFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
