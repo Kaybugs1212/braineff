@@ -8,13 +8,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ConsoleFragment extends Fragment
+public class ConsoleFragment extends Fragment implements InterpreterFragment.InputOutputListener
 {
-	public interface ProgramContentsProvider
-	{
-		public String getProgramContents();
-	}
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -25,119 +20,33 @@ public class ConsoleFragment extends Fragment
 			@Override
 			public void onClick(View view)
 			{
-				runProgram(getArguments().getString("file_contents"));
+				runProgram();
 			}
 		});
 		
 		return view;
 	}
 	
-	public void runProgram(String programContents)
+	public void runProgram()
+	{
+		InterpreterFragment fragment = (InterpreterFragment) getFragmentManager().findFragmentByTag("interpreter_fragment");
+		
+		if (fragment == null)
+			return;
+		
+		fragment.runProgram(this);
+	}
+
+	@Override
+	public void onInterpreterOutput(String output)
 	{
 		TextView consoleOutput = (TextView) getView().findViewById(R.id.console_output);
-		consoleOutput.setText("");
-		
-		int[] data = new int [10000];
-		int dataIndex = 0;	
-		
-		int programIndex = 0;
-		int programLength = programContents.length();
-		
-		boolean active = (programLength > 0);
-		
-		while (active == true)
-		{
-			char command = programContents.charAt(programIndex);
-			
-			switch (command)
-			{
-			case '>':
-				dataIndex++;
-				break;
-				
-			case '<':
-				dataIndex--;
-				break;
-				
-			case '+':
-				{
-					data[dataIndex]++;
-					
-					if (data[dataIndex] > 255)
-						data[dataIndex] = 0;
-				}
-				break;
-				
-			case '-':
-				{
-					data[dataIndex]--;
-					
-					if (data[dataIndex] < 0)
-						data[dataIndex] = 255;
-				}
-				break;
-				
-			case '.':
-				consoleOutput.append(String.valueOf((char) (data[dataIndex])));
-				break;
-				
-			case ',':
-				{
-					// TODO:
-				}
-				break;
-				
-			case '[':
-				{
-					if (data[dataIndex] > 0)
-						break;
-					
-					programIndex++;
-					
-					while (programIndex < programLength)
-					{			
-						if (programContents.charAt(programIndex) == ']')
-							break;
-						
-						programIndex++;
-					}										
-					
-					if (programIndex >= programLength)
-						active = false;
-				}				
-				break;		
+		consoleOutput.append(output);	
+	}
 
-			case ']':
-				{
-					if (data[dataIndex] == 0)
-						break;
-					
-					programIndex--;
-					
-					while (programIndex >= 0)
-					{
-						if (programContents.charAt(programIndex) == '[')
-							break;
-						
-						programIndex--;
-					}
-					
-					if (programIndex < 0)
-						active = false;
-				}
-				break;
-				
-			default:
-				break;
-			}
-			
-			if (active == true)
-			{			
-				programIndex++;
-			
-				if (programIndex >= programLength)
-					active = false;
-			}
-		}
+	@Override
+	public String onInterpreterInput()
+	{
+		return null;
 	}
 }

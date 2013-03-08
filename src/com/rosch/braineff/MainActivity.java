@@ -30,6 +30,14 @@ public class MainActivity extends Activity implements EditorFragment.EditorFragm
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.commit();
 		}
+		
+		if (getFragmentManager().findFragmentByTag("interpreter_fragment") == null)
+		{
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			
+			transaction.add(new InterpreterFragment(), "interpreter_fragment");
+			transaction.commit();
+		}
 	}
 	
 	@Override
@@ -52,23 +60,26 @@ public class MainActivity extends Activity implements EditorFragment.EditorFragm
 	@Override
 	public boolean onCompileProgram(Bundle arguments)
 	{	
-		ConsoleFragment fragment = (ConsoleFragment) getFragmentManager().findFragmentByTag("console_fragment");
+		InterpreterFragment interpreterFragment = (InterpreterFragment) getFragmentManager().findFragmentByTag("interpreter_fragment");
+		interpreterFragment.compileFile(arguments.getString("file_contents"));
 		
-		if (fragment == null)
+		ConsoleFragment consoleFragment = (ConsoleFragment) getFragmentManager().findFragmentByTag("console_fragment");
+		
+		if (consoleFragment == null)
 		{
-			fragment = new ConsoleFragment();
-			fragment.setArguments(arguments);
+			consoleFragment = new ConsoleFragment();
+			consoleFragment.setArguments(arguments);
 			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 	
 			transaction.addToBackStack(null);
-			transaction.replace(R.id.fragment_container, fragment, "console_fragment");
+			transaction.replace(R.id.fragment_container, consoleFragment, "console_fragment");
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.commit();
 		}
 		else
 		{
-			fragment.getArguments().putAll(arguments);
+			consoleFragment.getArguments().putAll(arguments);
 		}
 		
 		return false;

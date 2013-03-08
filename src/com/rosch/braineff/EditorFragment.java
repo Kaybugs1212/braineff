@@ -90,11 +90,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener,
 		
 	private boolean onEditorCompile()
 	{
-		EditorFragmentHandler handler = (EditorFragmentHandler) getActivity();
-		
-		if (handler == null)
-			return false;
-		
+		EditorFragmentHandler handler = (EditorFragmentHandler) getActivity();		
 		EditText sourceView = (EditText) getView().findViewById(R.id.file_contents);
 		
 		Bundle arguments = new Bundle();		
